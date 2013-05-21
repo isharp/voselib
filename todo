@@ -1,0 +1,116 @@
+Development notes:
+use a local git repository.
+always run executables inside gdb.
+make unit tests.
+use valgrind to check for errors.
+use doxygen to generate documentation.
+
+For opaqueness of API:
+// foo.h
+struct foo;
+void doStuff(struct foo *f);
+
+// foo.c
+struct foo {
+    int x;
+    int y;
+};
+
+
+
+implement API for:
+---singly linked lists
+	
+	Example of a list with elements.
+	[0]->[1]->[2]->[3]->NULL
+	
+	Each node is of type struct node.
+	A struct node is a struct with a data 
+	and next field:
+    
+	struct node {
+		void *data;
+		struct node *next;
+	}      
+	
+	struct sllist {
+		struct node *head;
+		struct node *tail;
+		struct node *current;
+		int size;
+	}
+	
+    A list of operations and their associated function
+	prototypes (with description):
+        
+		create new list:
+			struct sllist* sllist_create(void);
+				//Returns a pointer to a new, empty sllist.
+				//If allocation fails, returns NULL.
+        
+		destroy list:
+			void sllist_destroy(struct sllist *sllist); 
+				//Frees the memory of the list struct and all associated nodes.
+		
+		prepend node to the list:
+			int sllist_push_front(struct sllist *sllist, void *data);
+				//Adds a node to the front of the list. If allocation fails, returns -1, otherwise returns 0.
+				
+		append node to the list:
+			int sllist_push_back(struct sllist *sllist, void *data);
+				//Adds a node to the end of the list. If allocation fails, returns -1, otherwise returns 0.
+		
+		step through the list:
+			int sllist_step(struct sllist *sllist);
+				//Changes current to the node after current.
+				//Returns 1 if stepping is impossible (if current is NULL or current is the last node)
+				//Otherwise, returns 0.
+		
+		access data by index:
+			void* sllist_read(struct sllist *sllist, int index);
+				//The first node is at index 0.
+				//Returns NULL if the list is empty or the index is out of range
+				//Otherwise, returns a pointer to the data field of the node at index.
+			
+		obtain a pointer to a node by index:
+			struct node* sllist_find(struct sllist *sllist, int index);
+				//The first node is at index 0.
+				//Returns NULL if the list is empty or the index is out of range
+				//Otherwise, returns a pointer to the node at index.
+	
+		insert after node:	
+			int sllist_insert_after(struct sllist *sllist, struct node *node, void *data); 
+				//Adds a node after the passed node.
+				//If allocation fails, returns -1, otherwise returns 0.
+				
+		extract first node:
+			void* sllist_pop_front(struct sllist *sllist);
+				//Remove the first node from the linked list, save a pointer 
+				//to the data, free the node (but do not free the data itself), 
+				//and return a pointer to the data so that it can be used. 
+				//If the list is empty or the node doesn't exist in the list, returns NULL.
+					
+		extract last node:	
+			void* sllist_pop_back(struct sllist *sllist);
+				//Same as sllist_pop_front, but for to the last node.
+				
+		extract after node:	
+			void* sllist_extract_after(struct sllist *sllist, struct node *node);
+				//same behavior the pop/push functions, but applies to the passed node.
+		
+		access data of the first node:
+			void* sllist_read_front(struct sllist *sllist);
+				//Returns a pointer to the data field of the first node. If the list is empty,
+				//the function returns NULL.
+				
+		access data of the last node:
+			void* sllist_read_back(struct sllist *sllist);
+				//Returns a pointer to the data field of the last node. If the list is empty,
+				//the function returns NULL.
+		
+-doubly linked lists
+-stacks
+-hash tables
+-binary trees
+-red black trees
+
