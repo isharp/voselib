@@ -61,9 +61,51 @@ int sllist_push_back(struct sllist *sllist, void *data)
         return 0;
 }
 
+void* sllist_pop_front(struct sllist *sllist)
+{
+	if (sllist->size == 0)
+		return NULL;
+        void* data = sllist->head->data;
+        struct lnode *save_head = sllist->head;
+	if (sllist->size == 1) {
+                sllist->head = NULL;
+		sllist->tail = NULL;
+                //Clear current since it shouldn't be used.
+		sllist->current = NULL;
+	} else {
+		sllist->head = sllist->head->next;
+	}
+        free(save_head);
+	sllist->size--;
+	return data;
+}
+
+void* sllist_pop_back(struct sllist *sllist)
+{
+        if (sllist->size == 0)
+                return NULL;
+        void *data = sllist->tail->data;
+        struct lnode *save_tail = sllist->tail;
+        if (sllist->size == 1) {
+                sllist->head = NULL;
+                sllist->tail = NULL;
+                //Clear current since it shouldn't be used.
+                sllist->current = NULL;
+        } else {
+                struct lnode *new_tail = sllist->head;
+                while(new_tail->next->next != NULL)
+                        new_tail = new_tail->next;
+                sllist->tail = new_tail;
+                sllist->tail->next = NULL;
+        }
+        free(save_tail);
+        sllist->size--;
+        return data;
+}
+
 int sllist_step(struct sllist *sllist)
 {
-        if(sllist->current == NULL)
+        if (sllist->current == NULL)
                 return 1;
         else {
                 sllist->current = sllist->current->next;

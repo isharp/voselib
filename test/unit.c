@@ -60,33 +60,52 @@ static void sll_setup_pf(struct sll_fix *sll_f, gconstpointer test_data)
 //Prepare fixture for testing push_back operation.
 static void sll_setup_pb(struct sll_fix *sll_f, gconstpointer test_data)
 {
-		sll_f->sllist = sllist_create();
-		int *testp;
-		testp = malloc(sizeof(int) * 10);
-		for(int i = 0; i < 10; i++)
-				testp[i] = i * 10;
-		sllist_push_back(sll_f->sllist, testp);
+	sll_f->sllist = sllist_create();
+	int *testp;
+	testp = malloc(sizeof(int) * 10);
+	for(int i = 0; i < 10; i++)
+	        testp[i] = i * 10;
+	sllist_push_back(sll_f->sllist, testp);
+}
+
+//Prepare fixture for testing pop operation.
+static void sll_setup_pop(struct sll_fix *sll_f, gconstpointer ignored)
+{
+        sll_f->sllist = sllist_create();
+        int *testp_1;
+        int *testp_2;
+        int *testp_3;
+	testp_1 = malloc(sizeof(int) * 10);
+	testp_2 = malloc(sizeof(int) * 10);
+	testp_3 = malloc(sizeof(int) * 10);
+	for(int i = 0; i < 10; i++) {
+		testp_1[i] = i * 10;
+		testp_2[i] = i * 20;
+		testp_3[i] = i * 30;
+	}
+	sllist_push_back(sll_f->sllist, testp_1);
+	sllist_push_back(sll_f->sllist, testp_2);
+	sllist_push_back(sll_f->sllist, testp_3);
 }
 
 //Prepare fixture for testing step operation.
-
 static void sll_setup_step(struct sll_fix *sll_f, gconstpointer test_data)
 {
-		sll_f->sllist = sllist_create();
-		int *testp_1;
-		int *testp_2;
-                int *testp_3;
-		testp_1 = malloc(sizeof(int) * 10);
-		testp_2 = malloc(sizeof(int) * 10);
-		testp_3 = malloc(sizeof(int) * 10);
-		for(int i = 0; i < 10; i++) {
-				testp_1[i] = i * 10;
-				testp_2[i] = i * 20;
-				testp_3[i] = i * 30;
-		}
-		sllist_push_back(sll_f->sllist, testp_1);
-		sllist_push_back(sll_f->sllist, testp_2);
-		sllist_push_back(sll_f->sllist, testp_3);
+	sll_f->sllist = sllist_create();
+	int *testp_1;
+	int *testp_2;
+        int *testp_3;
+	testp_1 = malloc(sizeof(int) * 10);
+	testp_2 = malloc(sizeof(int) * 10);
+	testp_3 = malloc(sizeof(int) * 10);
+	for(int i = 0; i < 10; i++) {
+		testp_1[i] = i * 10;
+		testp_2[i] = i * 20;
+		testp_3[i] = i * 30;
+	}
+	sllist_push_back(sll_f->sllist, testp_1);
+	sllist_push_back(sll_f->sllist, testp_2);
+	sllist_push_back(sll_f->sllist, testp_3);
 }
 
 
@@ -107,8 +126,7 @@ static void check_pf(struct sll_fix *sll_f, gconstpointer ignored)
         int *int_arr;
 	int_arr = sll_f->sllist->head->data;
         g_assert(sll_f->sllist->size == 1);
-	int i;
-	for(i = 0; i < 10; i++)
+	for(int i = 0; i < 10; i++)
 	        g_assert(int_arr[i] == i * 10);
 }
 
@@ -119,10 +137,35 @@ static void check_pb(struct sll_fix *sll_f, gconstpointer ignored)
         int *int_arr;
         int_arr = sll_f->sllist->head->data;
         g_assert(sll_f->sllist->size == 1);
-        int i;
-        for(i = 0; i < 10; i++)
+        for(int i = 0; i < 10; i++)
                 g_assert(int_arr[i] == i * 10);
 
+}
+
+//Procedure for testing a pop_front operation on a list with 3 elements.
+static void check_popf(struct sll_fix *sll_f, gconstpointer ignored)
+{
+        sll_setup_pop(sll_f, ignored);
+        int* int_arr;
+        int loop_ctr = 1;
+        while ((int_arr = sllist_pop_front(sll_f->sllist))) {
+                for(int i = 0; i < 10; i++)
+                        g_assert(int_arr[i] == 10 * loop_ctr * i);
+                loop_ctr++;
+        }
+}
+
+//Procedure for testing a pop_back operation on a list with 3 elements.
+static void check_popb(struct sll_fix *sll_f, gconstpointer ignored)
+{
+        sll_setup_pop(sll_f, ignored);
+        int* int_arr;
+        int loop_ctr = 3;
+        while((int_arr = sllist_pop_back(sll_f->sllist))) {
+                for(int i = 0; i < 10; i++)
+                        g_assert(int_arr[i] == 10 * loop_ctr * i);
+                loop_ctr--;
+        }
 }
 
 //Procedure for testing a step operation on a list with 3 elements.
@@ -136,8 +179,7 @@ static void check_step(struct sll_fix *sll_f, gconstpointer ignored)
         int_arr_2 = sll_f->sllist->head->next->data;
         int_arr_3 = sll_f->sllist->head->next->next->data;
         g_assert(sll_f->sllist->size == 3);
-        int i;
-        for(i = 0; i < 10; i++) {
+        for(int i = 0; i < 10; i++) {
                 g_assert(int_arr_1[i] == i * 10);
                 g_assert(int_arr_2[i] == i * 20);
                 g_assert(int_arr_3[i] == i * 30);
@@ -146,8 +188,8 @@ static void check_step(struct sll_fix *sll_f, gconstpointer ignored)
         int loop_ctr = 1;
         sll_f->sllist->current = sll_f->sllist->head;
         while(sll_f->sllist->current != NULL) {
-                int_arr =sll_f->sllist->current->data;    
-                for(i = 0; i < 10; i++) {
+                int_arr =sll_f->sllist->current->data;
+                for(int i = 0; i < 10; i++) {
                         g_assert(int_arr[i] == 10 * loop_ctr * i);
                 }
                 sllist_step(sll_f->sllist);
@@ -162,13 +204,22 @@ static void check_step(struct sll_fix *sll_f, gconstpointer ignored)
 int main(int argc, char *argv[])
 {
         g_test_init(&argc, &argv, NULL);
-        g_test_add("/test/setup test", struct sll_fix, NULL, sll_setup,
-                                                check_create, sll_teardown);
-        g_test_add("/test/sll_setup_pf test", struct sll_fix, NULL,
+        g_test_add("/test/sll_create test", struct sll_fix, NULL, sll_setup,
+                                                        check_create,
+                                                        sll_teardown);
+        g_test_add("/test/sll_push_front test", struct sll_fix, NULL, 
                                                         sll_setup_pf, check_pf,
                                                         sll_teardown);
-        g_test_add("/test/sll_setup_pb test", struct sll_fix, NULL,
+        g_test_add("/test/sll_push_back test", struct sll_fix, NULL,
                                                         sll_setup_pb, check_pb,
+                                                        sll_teardown);
+        g_test_add("/test/sll_pop_front test", struct sll_fix, NULL, 
+                                                        sll_setup_pop,
+                                                        check_popf,
+                                                        sll_teardown);
+        g_test_add("/test/sll_pop_back test", struct sll_fix, NULL,
+                                                        sll_setup_pop,
+                                                        check_popb,
                                                         sll_teardown);
         g_test_add("/test/sll_step test", struct sll_fix, NULL, sll_setup_step,
                                                         check_step,

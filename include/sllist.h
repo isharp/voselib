@@ -68,11 +68,30 @@ int sllist_push_front(struct sllist *sllist, void *data);
 int sllist_push_back(struct sllist *sllist, void *data);
 
 /**
+ * Extract the first node.
+ *
+ * Remove the first node from the linked list, save a pointer to the data, free
+ * the node (but do not free the data itself), and return a pointer to the data
+ * so that it can be used. If the list is empty, returns NULL.
+ */
+void* sllist_pop_front(struct sllist *sllist);
+
+/**
+ * Extract the last node.
+ *
+ * Remove the last node from the linked list, save a pointer to the data, free
+ * the node (but do not free the data itself), and return a pointer to the data
+ * so that it can be used. If the list is empty, returns NULL.
+ */
+ void* sllist_pop_back(struct sllist *sllist);
+
+/**
  * Step through a list.
  *
  * Changes the current node to the node after the current node. Returns 1 if
  * the current node is NULL.
  */
+ 
 int sllist_step(struct sllist *sllist);
 
 /**
@@ -86,13 +105,6 @@ int sllist_step(struct sllist *sllist);
 void* sllist_read_index(struct sllist *sllist, int index);
 
 /**
- * Access data by node
- *
- * Returns a pointer to the payload of the passed node.
- */
-void* sllist_read_node(struct sllist *sllist, struct lnode *lnode);
-
-/**
  * Obtain a pointer to a node by index.
  *
  * Returns a pointer to the node at the location specified by the passed index
@@ -100,35 +112,15 @@ void* sllist_read_node(struct sllist *sllist, struct lnode *lnode);
  * the first node of the list. Returns NULL if the list is empty or the index is
  * out of range.
  */
-struct lnode* sllist_find(struct sllist *sllist, int index);
+struct lnode* sllist_find_index(struct sllist *sllist, int index);
 
 /**
  * Insert a node after a specified node.
  *
- * Adds a node after the passed node. If allocation fails, returns -1,
- * otherwise returns 0.
+ * Adds a node after the passed node. If allocation fails, returns -1. If the
+ * node doesn't exist in the list, returns 1. Otherwise, returns 0.
  */
 int sllist_insert_after(struct sllist *sllist, struct lnode *lnode, void *data);
-
-/**
- * Extract the first node.
- *
- * Remove the first node from the linked list, save a pointer to the data, free
- * the node (but do not free the data itself), and return a pointer to the data
- * so that it can be used. If the list is empty or the node doesn't exist in the
- * list, returns NULL.
- */
-void* sllist_pop_front(struct sllist *sllist);
-
-/**
- * Extract the last node.
- *
- * Remove the last node from the linked list, save a pointer to the data, free
- * the node (but do not free the data itself), and return a pointer to the data
- * so that it can be used. If the list is empty or the node doesn't exist in the
- * list, returns NULL.
- */
- void* sllist_pop_back(struct sllist *sllist);
 
 /**
  * Extract a specified node.
@@ -139,21 +131,5 @@ void* sllist_pop_front(struct sllist *sllist);
  * in the list, returns NULL.
  */
 void* sllist_extract_after(struct sllist *sllist, struct lnode *lnode);
-
-/**
- * Access data of the first node.
- *
- * Returns a pointer to the data field of the first node. If the list is empty,
- * the function returns NULL.
- */
-void* sllist_read_front(struct sllist *sllist);
-
-/**
- * Access data of the last node.
- *
- * Returns a pointer to the data field of the last node. If the list is empty,
- * the function returns NULL.
- */
-void* sllist_read_back(struct sllist *sllist);
 
 #endif
