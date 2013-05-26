@@ -112,3 +112,26 @@ int sllist_step(struct sllist *sllist)
                 return 0;
         }
 }
+
+void* sllist_read_index(struct sllist *sllist, int index)
+{
+        if ( ((sllist->size - index) < 0 ) || (index < 0) )
+                return NULL;
+        struct lnode *target;
+        target = sllist->head;
+        for(int i = 0; i < index; i++)
+                target = target->next;
+        return (target->data);
+}
+
+struct lnode* sllist_find_index(struct sllist *sllist, int index)
+{
+        if ( ((sllist->size - index) < 0 ) || (index < 0) )
+                return NULL;
+        struct lnode *target;
+        target = sllist->head;
+        for(int i = 0; i < index; i++)
+                target = target->next;
+        return target;
+        
+}

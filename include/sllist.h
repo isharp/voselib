@@ -91,7 +91,7 @@ void* sllist_pop_front(struct sllist *sllist);
  * Changes the current node to the node after the current node. Returns 1 if
  * the current node is NULL.
  */
- 
+
 int sllist_step(struct sllist *sllist);
 
 /**

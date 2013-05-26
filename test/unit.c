@@ -29,17 +29,16 @@
  */
 
 
- //Singly linked list fixture. A wrapper for sllist struct, for testing.
+//Singly linked list fixture. A wrapper for sllist struct, for testing.
 struct sll_fix {
         struct sllist *sllist;
 };
 
 //Prepare fixture for testing an empty list.
-static void sll_setup(struct sll_fix *sll_f, gconstpointer test_data)
+static void sll_setup(struct sll_fix *sll_f, gconstpointer ignored)
 {
         sll_f->sllist = sllist_create();
 }
-
 
 static void sll_teardown(struct sll_fix *sll_f, gconstpointer ignored)
 {
@@ -47,7 +46,7 @@ static void sll_teardown(struct sll_fix *sll_f, gconstpointer ignored)
 }
 
 //Prepare fixture for testing push_front operation.
-static void sll_setup_pf(struct sll_fix *sll_f, gconstpointer test_data)
+static void sll_setup_pf(struct sll_fix *sll_f, gconstpointer ignored)
 {
         sll_f->sllist = sllist_create();
         int *testp;
@@ -58,7 +57,7 @@ static void sll_setup_pf(struct sll_fix *sll_f, gconstpointer test_data)
 }
 
 //Prepare fixture for testing push_back operation.
-static void sll_setup_pb(struct sll_fix *sll_f, gconstpointer test_data)
+static void sll_setup_pb(struct sll_fix *sll_f, gconstpointer ignored)
 {
 	sll_f->sllist = sllist_create();
 	int *testp;
@@ -89,7 +88,7 @@ static void sll_setup_pop(struct sll_fix *sll_f, gconstpointer ignored)
 }
 
 //Prepare fixture for testing step operation.
-static void sll_setup_step(struct sll_fix *sll_f, gconstpointer test_data)
+static void sll_setup_step(struct sll_fix *sll_f, gconstpointer ignored)
 {
 	sll_f->sllist = sllist_create();
 	int *testp_1;
@@ -108,6 +107,19 @@ static void sll_setup_step(struct sll_fix *sll_f, gconstpointer test_data)
 	sllist_push_back(sll_f->sllist, testp_3);
 }
 
+//Prepare fixture for testing a lengthy list (100 elements.)
+static void sll_setup_lengthy(struct sll_fix *sll_f, gconstpointer ignored)
+{
+        sll_f->sllist = sllist_create();
+        int *testp;
+        for(int i = 0; i < 100; i++) {
+                testp = malloc(sizeof(int) * 10);
+                for(int j = 0; j < 10; j++)
+                        testp[j] = 10 * j * i;
+                sllist_push_back(sll_f->sllist, testp);
+                
+        }
+}
 
 //Procedure for testing an empty list
 static void check_create(struct sll_fix *sll_f, gconstpointer ignored)
@@ -188,17 +200,48 @@ static void check_step(struct sll_fix *sll_f, gconstpointer ignored)
         int loop_ctr = 1;
         sll_f->sllist->current = sll_f->sllist->head;
         while(sll_f->sllist->current != NULL) {
-                int_arr =sll_f->sllist->current->data;
-                for(int i = 0; i < 10; i++) {
+                int_arr = sll_f->sllist->current->data;
+                for(int i = 0; i < 10; i++)
                         g_assert(int_arr[i] == 10 * loop_ctr * i);
-                }
                 sllist_step(sll_f->sllist);
                 loop_ctr++;
         }
 
+}
 
+//Procedure for testing a read_index operation on a list with 100 elements.
+static void check_ri(struct sll_fix *sll_f, gconstpointer ignored)
+{
+        int *int_arr;
+        sll_f->sllist->current = sll_f->sllist->head;
+        for(int i = 0; i < sll_f->sllist->size; i++) {
+                int_arr = sllist_read_index(sll_f->sllist, i);
+                for(int j = 0; j < 10; j++)
+                        g_assert(int_arr[j] == 10 * j * i);
+                sllist_step(sll_f->sllist);
+        }
+}
+
+//Procedure for testing a find_index operation on a list with 100 elements.
+static void check_fi(struct sll_fix *sll_f, gconstpointer ignored)
+{
+        struct lnode *node_p;
+        int *int_arr;
+        sll_f->sllist->current = sll_f->sllist->head;
+        for(int i = 0; i < sll_f->sllist->size; i++) {
+                node_p = sllist_find_index(sll_f->sllist, i);
+                int_arr = node_p->data;
+                for(int j = 0; j < 10; j++)
+                        g_assert(int_arr[j] == 10 * j * i);
+                sllist_step(sll_f->sllist);
+        }
 
 }
+//Procedure for testing an insert_after operation on a list with 100 elements.
+//code
+
+//Procedure for testing an extract_after operation on a list with 100 elements.
+//code
 
 //Run tests in the order they appear in this file.
 int main(int argc, char *argv[])
@@ -224,5 +267,11 @@ int main(int argc, char *argv[])
         g_test_add("/test/sll_step test", struct sll_fix, NULL, sll_setup_step,
                                                         check_step,
                                                         sll_teardown);
+        g_test_add("/test/sll_read_index test", struct sll_fix, NULL,
+                                                        sll_setup_lengthy, 
+                                                        check_ri, sll_teardown);
+        g_test_add("/test/sll_find_index test", struct sll_fix, NULL,
+                                                        sll_setup_lengthy, 
+                                                        check_fi, sll_teardown);
         return g_test_run();
 }
