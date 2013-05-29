@@ -7,7 +7,7 @@ headers = $(wildcard include/*.h)
 lib_hdr = $(wildcard src/*.h)
 lib_src = $(wildcard src/*.c)
 test_hdr = $(wildcard src/*.h)
-test_src = $(wildcard test/*unit.c)
+test_src = $(wildcard test/*mem.c)
 
 
 $(EXECUTABLE): $(patsubst %.c, %.o, $(test_src)) $(patsubst %.c, %.o, $(lib_src))

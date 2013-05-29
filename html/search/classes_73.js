@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['sll_5ffixture',['sll_fixture',['../structsll__fixture.html',1,'']]]
+  ['sll_5ffix',['sll_fix',['../structsll__fix.html',1,'']]],
+  ['sllist',['sllist',['../structsllist.html',1,'']]]
 ];

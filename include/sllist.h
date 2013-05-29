@@ -5,9 +5,8 @@
  * @file sllist.h
  * @brief Stuctures and functions for a singly-linked list API.
  *
- * The API presented here is intended to be an opaque implementation. The user
- * is provided with several different functions to manipulate lists and their
- * contents.
+ * The user provided with several different functions to manipulate lists and
+ * associated data.
  */
 
 /**
@@ -105,31 +104,22 @@ int sllist_step(struct sllist *sllist);
 void* sllist_read_index(struct sllist *sllist, int index);
 
 /**
- * Obtain a pointer to a node by index.
- *
- * Returns a pointer to the node at the location specified by the passed index
- * value. The passed index value is interpreted as an offset from index zero,
- * the first node of the list. Returns NULL if the list is empty or the index is
- * out of range.
- */
-struct lnode* sllist_find_index(struct sllist *sllist, int index);
-
-/**
- * Insert a node after a specified node.
+ * Insert a node after the node at the specified index.
  *
  * Adds a node after the passed node. If allocation fails, returns -1. If the
  * node doesn't exist in the list, returns 1. Otherwise, returns 0.
  */
-int sllist_insert_after(struct sllist *sllist, struct lnode *lnode, void *data);
+int sllist_insert_after(struct sllist *sllist, int index, void *data);
 
 /**
- * Extract a specified node.
+ * Extract a node after the node at the specified index.
  *
  * Remove the specified node from the linked list, save a pointer to the data,
  * free the node (but do not free the data itself), and return a pointer to the
  * data so that it can be used. If the list is empty or the node doesn't exist
- * in the list, returns NULL.
+ * in the list, returns NULL. Attempting to extract after the tail will also
+ * return NULL.
  */
-void* sllist_extract_after(struct sllist *sllist, struct lnode *lnode);
+void* sllist_extract_after(struct sllist *sllist, int index);
 
 #endif

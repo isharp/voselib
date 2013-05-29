@@ -6,44 +6,45 @@
 Stuctures and functions for a singly-\/linked list A\-P\-I.  
 
 
+\subsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+struct \hyperlink{structlnode}{lnode}
+\item 
+struct \hyperlink{structsllist}{sllist}
+\end{DoxyCompactItemize}
 \subsection*{Functions}
 \begin{DoxyCompactItemize}
 \item 
-struct sllist $\ast$ \hyperlink{sllist_8h_a31ad4237b7bfcb9d94070c5867f6ed5c}{sllist\-\_\-create} (void)
+struct \hyperlink{structsllist}{sllist} $\ast$ \hyperlink{sllist_8h_a31ad4237b7bfcb9d94070c5867f6ed5c}{sllist\-\_\-create} (void)
 \item 
-void \hyperlink{sllist_8h_a29ddcfd0f34a9256fdcfb5f483821a77}{sllist\-\_\-destroy} (struct sllist $\ast$sllist)
+void \hyperlink{sllist_8h_a29ddcfd0f34a9256fdcfb5f483821a77}{sllist\-\_\-destroy} (struct \hyperlink{structsllist}{sllist} $\ast$\hyperlink{structsllist}{sllist})
 \item 
-int \hyperlink{sllist_8h_a8a211259de8570cb9254f38a75e52024}{sllist\-\_\-push\-\_\-front} (struct sllist $\ast$sllist, void $\ast$data)
+int \hyperlink{sllist_8h_a8a211259de8570cb9254f38a75e52024}{sllist\-\_\-push\-\_\-front} (struct \hyperlink{structsllist}{sllist} $\ast$\hyperlink{structsllist}{sllist}, void $\ast$data)
 \item 
-int \hyperlink{sllist_8h_a12b1692846d312ea2856084cd8b6f323}{sllist\-\_\-push\-\_\-back} (struct sllist $\ast$sllist, void $\ast$data)
+int \hyperlink{sllist_8h_a12b1692846d312ea2856084cd8b6f323}{sllist\-\_\-push\-\_\-back} (struct \hyperlink{structsllist}{sllist} $\ast$\hyperlink{structsllist}{sllist}, void $\ast$data)
 \item 
-int \hyperlink{sllist_8h_a7e829be146710556cce63ee83c932dd9}{sllist\-\_\-step} (struct sllist $\ast$sllist)
+void $\ast$ \hyperlink{sllist_8h_a522e0dc90783f10dea07df8ad997bffd}{sllist\-\_\-pop\-\_\-front} (struct \hyperlink{structsllist}{sllist} $\ast$\hyperlink{structsllist}{sllist})
 \item 
-void $\ast$ \hyperlink{sllist_8h_a97f74989b604470a4104fbe9fe0e1d18}{sllist\-\_\-read} (struct sllist $\ast$sllist, int index)
+void $\ast$ \hyperlink{sllist_8h_ad1b91139752ed0d37019b835bbf1f6a7}{sllist\-\_\-pop\-\_\-back} (struct \hyperlink{structsllist}{sllist} $\ast$\hyperlink{structsllist}{sllist})
 \item 
-struct lnode $\ast$ \hyperlink{sllist_8h_af5d5c3c185f5e8005ed079a67932f96f}{sllist\-\_\-find} (struct sllist $\ast$sllist, int index)
+int \hyperlink{sllist_8h_a7e829be146710556cce63ee83c932dd9}{sllist\-\_\-step} (struct \hyperlink{structsllist}{sllist} $\ast$\hyperlink{structsllist}{sllist})
 \item 
-int \hyperlink{sllist_8h_aa6b697791950b000bc5a53f2d2cd2ba0}{sllist\-\_\-insert\-\_\-after} (struct sllist $\ast$sllist, struct lnode $\ast$lnode, void $\ast$data)
+void $\ast$ \hyperlink{sllist_8h_a0fc6bfa35f80916d3ac94573fc4dc9cf}{sllist\-\_\-read\-\_\-index} (struct \hyperlink{structsllist}{sllist} $\ast$\hyperlink{structsllist}{sllist}, int index)
 \item 
-void $\ast$ \hyperlink{sllist_8h_a522e0dc90783f10dea07df8ad997bffd}{sllist\-\_\-pop\-\_\-front} (struct sllist $\ast$sllist)
+int \hyperlink{sllist_8h_a46816b8b192ccd38ff7003f817d97d9a}{sllist\-\_\-insert\-\_\-after} (struct \hyperlink{structsllist}{sllist} $\ast$\hyperlink{structsllist}{sllist}, int index, void $\ast$data)
 \item 
-void $\ast$ \hyperlink{sllist_8h_ad1b91139752ed0d37019b835bbf1f6a7}{sllist\-\_\-pop\-\_\-back} (struct sllist $\ast$sllist)
-\item 
-void $\ast$ \hyperlink{sllist_8h_a4eb870c7c53b316f63591965bda25ec6}{sllist\-\_\-extract\-\_\-after} (struct sllist $\ast$sllist, struct lnode $\ast$lnode)
-\item 
-void $\ast$ \hyperlink{sllist_8h_a1258baec909fd4656e19c5dff55ee7f8}{sllist\-\_\-read\-\_\-front} (struct sllist $\ast$sllist)
-\item 
-void $\ast$ \hyperlink{sllist_8h_ac65a4a55d407992249babcde7ef87ee5}{sllist\-\_\-read\-\_\-back} (struct sllist $\ast$sllist)
+void $\ast$ \hyperlink{sllist_8h_a51e80ffd8ba579456004d636e2759355}{sllist\-\_\-extract\-\_\-after} (struct \hyperlink{structsllist}{sllist} $\ast$\hyperlink{structsllist}{sllist}, int index)
 \end{DoxyCompactItemize}
 
 
 \subsection{Detailed Description}
-Stuctures and functions for a singly-\/linked list A\-P\-I. The A\-P\-I presented here is intended to be an opaque implementation. The user is provided with several different functions to manipulate lists and their contents. 
+Stuctures and functions for a singly-\/linked list A\-P\-I. The user provided with several different functions to manipulate lists and associated data. 
 
 \subsection{Function Documentation}
 \hypertarget{sllist_8h_a31ad4237b7bfcb9d94070c5867f6ed5c}{\index{sllist.\-h@{sllist.\-h}!sllist\-\_\-create@{sllist\-\_\-create}}
 \index{sllist\-\_\-create@{sllist\-\_\-create}!sllist.h@{sllist.\-h}}
-\subsubsection[{sllist\-\_\-create}]{\setlength{\rightskip}{0pt plus 5cm}struct sllist$\ast$ sllist\-\_\-create (
+\subsubsection[{sllist\-\_\-create}]{\setlength{\rightskip}{0pt plus 5cm}struct {\bf sllist}$\ast$ sllist\-\_\-create (
 \begin{DoxyParamCaption}
 \item[{void}]{}
 \end{DoxyParamCaption}
@@ -54,65 +55,55 @@ Returns a pointer to a new, empty list. If allocation fails, returns N\-U\-L\-L.
 \index{sllist\-\_\-destroy@{sllist\-\_\-destroy}!sllist.h@{sllist.\-h}}
 \subsubsection[{sllist\-\_\-destroy}]{\setlength{\rightskip}{0pt plus 5cm}void sllist\-\_\-destroy (
 \begin{DoxyParamCaption}
-\item[{struct sllist $\ast$}]{sllist}
+\item[{struct {\bf sllist} $\ast$}]{sllist}
 \end{DoxyParamCaption}
 )}}\label{sllist_8h_a29ddcfd0f34a9256fdcfb5f483821a77}
 Destroy a list.
 
-Frees the memory of the list struct and all associated nodes. \hypertarget{sllist_8h_a4eb870c7c53b316f63591965bda25ec6}{\index{sllist.\-h@{sllist.\-h}!sllist\-\_\-extract\-\_\-after@{sllist\-\_\-extract\-\_\-after}}
+Frees the memory of the list struct and all associated nodes. \hypertarget{sllist_8h_a51e80ffd8ba579456004d636e2759355}{\index{sllist.\-h@{sllist.\-h}!sllist\-\_\-extract\-\_\-after@{sllist\-\_\-extract\-\_\-after}}
 \index{sllist\-\_\-extract\-\_\-after@{sllist\-\_\-extract\-\_\-after}!sllist.h@{sllist.\-h}}
 \subsubsection[{sllist\-\_\-extract\-\_\-after}]{\setlength{\rightskip}{0pt plus 5cm}void$\ast$ sllist\-\_\-extract\-\_\-after (
 \begin{DoxyParamCaption}
-\item[{struct sllist $\ast$}]{sllist, }
-\item[{struct lnode $\ast$}]{lnode}
-\end{DoxyParamCaption}
-)}}\label{sllist_8h_a4eb870c7c53b316f63591965bda25ec6}
-Extract a specified node.
-
-Remove the specified node from the linked list, save a pointer to the data, free the node (but do not free the data itself), and return a pointer to the data so that it can be used. If the list is empty or the node doesn't exist in the list, returns N\-U\-L\-L. \hypertarget{sllist_8h_af5d5c3c185f5e8005ed079a67932f96f}{\index{sllist.\-h@{sllist.\-h}!sllist\-\_\-find@{sllist\-\_\-find}}
-\index{sllist\-\_\-find@{sllist\-\_\-find}!sllist.h@{sllist.\-h}}
-\subsubsection[{sllist\-\_\-find}]{\setlength{\rightskip}{0pt plus 5cm}struct lnode$\ast$ sllist\-\_\-find (
-\begin{DoxyParamCaption}
-\item[{struct sllist $\ast$}]{sllist, }
+\item[{struct {\bf sllist} $\ast$}]{sllist, }
 \item[{int}]{index}
 \end{DoxyParamCaption}
-)}}\label{sllist_8h_af5d5c3c185f5e8005ed079a67932f96f}
-Obtain a pointer to a node by index.
+)}}\label{sllist_8h_a51e80ffd8ba579456004d636e2759355}
+Extract a node after the node at the specified index.
 
-Returns a pointer to the node at the location specified by the passed index value. The passed index value is interpreted as an offset from index zero, the first node of the list. Returns N\-U\-L\-L if the list is empty or the index is out of range. \hypertarget{sllist_8h_aa6b697791950b000bc5a53f2d2cd2ba0}{\index{sllist.\-h@{sllist.\-h}!sllist\-\_\-insert\-\_\-after@{sllist\-\_\-insert\-\_\-after}}
+Remove the specified node from the linked list, save a pointer to the data, free the node (but do not free the data itself), and return a pointer to the data so that it can be used. If the list is empty or the node doesn't exist in the list, returns N\-U\-L\-L. Attempting to extract after the tail will also return N\-U\-L\-L. \hypertarget{sllist_8h_a46816b8b192ccd38ff7003f817d97d9a}{\index{sllist.\-h@{sllist.\-h}!sllist\-\_\-insert\-\_\-after@{sllist\-\_\-insert\-\_\-after}}
 \index{sllist\-\_\-insert\-\_\-after@{sllist\-\_\-insert\-\_\-after}!sllist.h@{sllist.\-h}}
 \subsubsection[{sllist\-\_\-insert\-\_\-after}]{\setlength{\rightskip}{0pt plus 5cm}int sllist\-\_\-insert\-\_\-after (
 \begin{DoxyParamCaption}
-\item[{struct sllist $\ast$}]{sllist, }
-\item[{struct lnode $\ast$}]{lnode, }
+\item[{struct {\bf sllist} $\ast$}]{sllist, }
+\item[{int}]{index, }
 \item[{void $\ast$}]{data}
 \end{DoxyParamCaption}
-)}}\label{sllist_8h_aa6b697791950b000bc5a53f2d2cd2ba0}
-Insert a node after a specified node.
+)}}\label{sllist_8h_a46816b8b192ccd38ff7003f817d97d9a}
+Insert a node after the node at the specified index.
 
-Adds a node after the passed node. If allocation fails, returns -\/1, otherwise returns 0. \hypertarget{sllist_8h_ad1b91139752ed0d37019b835bbf1f6a7}{\index{sllist.\-h@{sllist.\-h}!sllist\-\_\-pop\-\_\-back@{sllist\-\_\-pop\-\_\-back}}
+Adds a node after the passed node. If allocation fails, returns -\/1. If the node doesn't exist in the list, returns 1. Otherwise, returns 0. \hypertarget{sllist_8h_ad1b91139752ed0d37019b835bbf1f6a7}{\index{sllist.\-h@{sllist.\-h}!sllist\-\_\-pop\-\_\-back@{sllist\-\_\-pop\-\_\-back}}
 \index{sllist\-\_\-pop\-\_\-back@{sllist\-\_\-pop\-\_\-back}!sllist.h@{sllist.\-h}}
 \subsubsection[{sllist\-\_\-pop\-\_\-back}]{\setlength{\rightskip}{0pt plus 5cm}void$\ast$ sllist\-\_\-pop\-\_\-back (
 \begin{DoxyParamCaption}
-\item[{struct sllist $\ast$}]{sllist}
+\item[{struct {\bf sllist} $\ast$}]{sllist}
 \end{DoxyParamCaption}
 )}}\label{sllist_8h_ad1b91139752ed0d37019b835bbf1f6a7}
 Extract the last node.
 
-Remove the last node from the linked list, save a pointer to the data, free the node (but do not free the data itself), and return a pointer to the data so that it can be used. If the list is empty or the node doesn't exist in the list, returns N\-U\-L\-L. \hypertarget{sllist_8h_a522e0dc90783f10dea07df8ad997bffd}{\index{sllist.\-h@{sllist.\-h}!sllist\-\_\-pop\-\_\-front@{sllist\-\_\-pop\-\_\-front}}
+Remove the last node from the linked list, save a pointer to the data, free the node (but do not free the data itself), and return a pointer to the data so that it can be used. If the list is empty, returns N\-U\-L\-L. \hypertarget{sllist_8h_a522e0dc90783f10dea07df8ad997bffd}{\index{sllist.\-h@{sllist.\-h}!sllist\-\_\-pop\-\_\-front@{sllist\-\_\-pop\-\_\-front}}
 \index{sllist\-\_\-pop\-\_\-front@{sllist\-\_\-pop\-\_\-front}!sllist.h@{sllist.\-h}}
 \subsubsection[{sllist\-\_\-pop\-\_\-front}]{\setlength{\rightskip}{0pt plus 5cm}void$\ast$ sllist\-\_\-pop\-\_\-front (
 \begin{DoxyParamCaption}
-\item[{struct sllist $\ast$}]{sllist}
+\item[{struct {\bf sllist} $\ast$}]{sllist}
 \end{DoxyParamCaption}
 )}}\label{sllist_8h_a522e0dc90783f10dea07df8ad997bffd}
 Extract the first node.
 
-Remove the first node from the linked list, save a pointer to the data, free the node (but do not free the data itself), and return a pointer to the data so that it can be used. If the list is empty or the node doesn't exist in the list, returns N\-U\-L\-L. \hypertarget{sllist_8h_a12b1692846d312ea2856084cd8b6f323}{\index{sllist.\-h@{sllist.\-h}!sllist\-\_\-push\-\_\-back@{sllist\-\_\-push\-\_\-back}}
+Remove the first node from the linked list, save a pointer to the data, free the node (but do not free the data itself), and return a pointer to the data so that it can be used. If the list is empty, returns N\-U\-L\-L. \hypertarget{sllist_8h_a12b1692846d312ea2856084cd8b6f323}{\index{sllist.\-h@{sllist.\-h}!sllist\-\_\-push\-\_\-back@{sllist\-\_\-push\-\_\-back}}
 \index{sllist\-\_\-push\-\_\-back@{sllist\-\_\-push\-\_\-back}!sllist.h@{sllist.\-h}}
 \subsubsection[{sllist\-\_\-push\-\_\-back}]{\setlength{\rightskip}{0pt plus 5cm}int sllist\-\_\-push\-\_\-back (
 \begin{DoxyParamCaption}
-\item[{struct sllist $\ast$}]{sllist, }
+\item[{struct {\bf sllist} $\ast$}]{sllist, }
 \item[{void $\ast$}]{data}
 \end{DoxyParamCaption}
 )}}\label{sllist_8h_a12b1692846d312ea2856084cd8b6f323}
@@ -122,47 +113,29 @@ Adds a node to the end of the list. If allocation fails, returns -\/1, otherwise
 \index{sllist\-\_\-push\-\_\-front@{sllist\-\_\-push\-\_\-front}!sllist.h@{sllist.\-h}}
 \subsubsection[{sllist\-\_\-push\-\_\-front}]{\setlength{\rightskip}{0pt plus 5cm}int sllist\-\_\-push\-\_\-front (
 \begin{DoxyParamCaption}
-\item[{struct sllist $\ast$}]{sllist, }
+\item[{struct {\bf sllist} $\ast$}]{sllist, }
 \item[{void $\ast$}]{data}
 \end{DoxyParamCaption}
 )}}\label{sllist_8h_a8a211259de8570cb9254f38a75e52024}
 Prepend a node to the list\-:
 
-Adds a node to the front of the list. If allocation fails, returns -\/1, otherwise returns 0. \hypertarget{sllist_8h_a97f74989b604470a4104fbe9fe0e1d18}{\index{sllist.\-h@{sllist.\-h}!sllist\-\_\-read@{sllist\-\_\-read}}
-\index{sllist\-\_\-read@{sllist\-\_\-read}!sllist.h@{sllist.\-h}}
-\subsubsection[{sllist\-\_\-read}]{\setlength{\rightskip}{0pt plus 5cm}void$\ast$ sllist\-\_\-read (
+Adds a node to the front of the list. If allocation fails, returns -\/1, otherwise returns 0. \hypertarget{sllist_8h_a0fc6bfa35f80916d3ac94573fc4dc9cf}{\index{sllist.\-h@{sllist.\-h}!sllist\-\_\-read\-\_\-index@{sllist\-\_\-read\-\_\-index}}
+\index{sllist\-\_\-read\-\_\-index@{sllist\-\_\-read\-\_\-index}!sllist.h@{sllist.\-h}}
+\subsubsection[{sllist\-\_\-read\-\_\-index}]{\setlength{\rightskip}{0pt plus 5cm}void$\ast$ sllist\-\_\-read\-\_\-index (
 \begin{DoxyParamCaption}
-\item[{struct sllist $\ast$}]{sllist, }
+\item[{struct {\bf sllist} $\ast$}]{sllist, }
 \item[{int}]{index}
 \end{DoxyParamCaption}
-)}}\label{sllist_8h_a97f74989b604470a4104fbe9fe0e1d18}
+)}}\label{sllist_8h_a0fc6bfa35f80916d3ac94573fc4dc9cf}
 Access data by index.
 
-Returns a pointer to the payload of the node at the location specified by the passed index value. The passed index value is interpreted as an offset from index zero, the first node of the list. Returns N\-U\-L\-L if the list is empty or the index is out of range. \hypertarget{sllist_8h_ac65a4a55d407992249babcde7ef87ee5}{\index{sllist.\-h@{sllist.\-h}!sllist\-\_\-read\-\_\-back@{sllist\-\_\-read\-\_\-back}}
-\index{sllist\-\_\-read\-\_\-back@{sllist\-\_\-read\-\_\-back}!sllist.h@{sllist.\-h}}
-\subsubsection[{sllist\-\_\-read\-\_\-back}]{\setlength{\rightskip}{0pt plus 5cm}void$\ast$ sllist\-\_\-read\-\_\-back (
-\begin{DoxyParamCaption}
-\item[{struct sllist $\ast$}]{sllist}
-\end{DoxyParamCaption}
-)}}\label{sllist_8h_ac65a4a55d407992249babcde7ef87ee5}
-Access data of the last node.
-
-Returns a pointer to the data field of the last node. If the list is empty, the function returns N\-U\-L\-L. \hypertarget{sllist_8h_a1258baec909fd4656e19c5dff55ee7f8}{\index{sllist.\-h@{sllist.\-h}!sllist\-\_\-read\-\_\-front@{sllist\-\_\-read\-\_\-front}}
-\index{sllist\-\_\-read\-\_\-front@{sllist\-\_\-read\-\_\-front}!sllist.h@{sllist.\-h}}
-\subsubsection[{sllist\-\_\-read\-\_\-front}]{\setlength{\rightskip}{0pt plus 5cm}void$\ast$ sllist\-\_\-read\-\_\-front (
-\begin{DoxyParamCaption}
-\item[{struct sllist $\ast$}]{sllist}
-\end{DoxyParamCaption}
-)}}\label{sllist_8h_a1258baec909fd4656e19c5dff55ee7f8}
-Access data of the first node.
-
-Returns a pointer to the data field of the first node. If the list is empty, the function returns N\-U\-L\-L. \hypertarget{sllist_8h_a7e829be146710556cce63ee83c932dd9}{\index{sllist.\-h@{sllist.\-h}!sllist\-\_\-step@{sllist\-\_\-step}}
+Returns a pointer to the payload of the node at the location specified by the passed index value. The passed index value is interpreted as an offset from index zero, the first node of the list. Returns N\-U\-L\-L if the list is empty or the index is out of range. \hypertarget{sllist_8h_a7e829be146710556cce63ee83c932dd9}{\index{sllist.\-h@{sllist.\-h}!sllist\-\_\-step@{sllist\-\_\-step}}
 \index{sllist\-\_\-step@{sllist\-\_\-step}!sllist.h@{sllist.\-h}}
 \subsubsection[{sllist\-\_\-step}]{\setlength{\rightskip}{0pt plus 5cm}int sllist\-\_\-step (
 \begin{DoxyParamCaption}
-\item[{struct sllist $\ast$}]{sllist}
+\item[{struct {\bf sllist} $\ast$}]{sllist}
 \end{DoxyParamCaption}
 )}}\label{sllist_8h_a7e829be146710556cce63ee83c932dd9}
 Step through a list.
 
-Changes the current node to the node after the current node. Returns 1 if stepping is impossible, such as when the current node is N\-U\-L\-L or at the very end of the list. Otherwise, returns 0. 
+Changes the current node to the node after the current node. Returns 1 if the current node is N\-U\-L\-L. 

@@ -115,7 +115,7 @@ static void sll_setup_lengthy(struct sll_fix *sll_f, gconstpointer ignored)
         for(int i = 0; i < 100; i++) {
                 testp = malloc(sizeof(int) * 10);
                 for(int j = 0; j < 10; j++)
-                        testp[j] = 10 * j * i;
+                        testp[j] = j * 10;
                 sllist_push_back(sll_f->sllist, testp);
                 
         }
@@ -212,36 +212,61 @@ static void check_step(struct sll_fix *sll_f, gconstpointer ignored)
 //Procedure for testing a read_index operation on a list with 100 elements.
 static void check_ri(struct sll_fix *sll_f, gconstpointer ignored)
 {
+        sll_setup_lengthy(sll_f, ignored);
         int *int_arr;
         sll_f->sllist->current = sll_f->sllist->head;
         for(int i = 0; i < sll_f->sllist->size; i++) {
                 int_arr = sllist_read_index(sll_f->sllist, i);
                 for(int j = 0; j < 10; j++)
-                        g_assert(int_arr[j] == 10 * j * i);
+                        g_assert(int_arr[j] == j * 10);
                 sllist_step(sll_f->sllist);
         }
 }
 
-//Procedure for testing a find_index operation on a list with 100 elements.
-static void check_fi(struct sll_fix *sll_f, gconstpointer ignored)
-{
-        struct lnode *node_p;
-        int *int_arr;
-        sll_f->sllist->current = sll_f->sllist->head;
-        for(int i = 0; i < sll_f->sllist->size; i++) {
-                node_p = sllist_find_index(sll_f->sllist, i);
-                int_arr = node_p->data;
-                for(int j = 0; j < 10; j++)
-                        g_assert(int_arr[j] == 10 * j * i);
-                sllist_step(sll_f->sllist);
-        }
-
-}
 //Procedure for testing an insert_after operation on a list with 100 elements.
-//code
+static void check_ia(struct sll_fix *sll_f, gconstpointer ignored)
+{
+        sll_setup_lengthy(sll_f, ignored);
+        int *int_arr;
+        int_arr = malloc(sizeof(int) * 10);
+        for(int i = 0; i < 10; i++)
+                int_arr[i] = 314159 * i;
+        g_assert(!sllist_insert_after(sll_f->sllist, 0, int_arr));
+        g_assert(!sllist_insert_after(sll_f->sllist, 1, int_arr));
+        g_assert(!sllist_insert_after(sll_f->sllist, 50, int_arr));
+        g_assert(!sllist_insert_after(sll_f->sllist, 102, int_arr));
+        int_arr = sllist_read_index(sll_f->sllist, 0);
+        for(int i = 0; i < 10; i++)
+                g_assert(int_arr[i] == i * 10);
+        int_arr = sllist_read_index(sll_f->sllist, 1);
+        for(int i = 0; i < 10; i++)
+                g_assert(int_arr[i] == 314159 * i);
+        int_arr = sllist_read_index(sll_f->sllist, 2);
+        for(int i = 0; i < 10; i++)
+                g_assert(int_arr[i] == 314159 * i);
+        int_arr = sllist_read_index(sll_f->sllist, 51);
+        for(int i = 0; i < 10; i++)
+                g_assert(int_arr[i] == 314159 * i);
+        int_arr = sllist_read_index(sll_f->sllist, 52);
+        for(int i = 0; i < 10; i++)
+                g_assert(int_arr[i] == i * 10);
+        int_arr = sllist_read_index(sll_f->sllist, 103);
+        for(int i = 0; i < 10; i++)
+                g_assert(int_arr[i] == 314159 * i);
+
+}
 
 //Procedure for testing an extract_after operation on a list with 100 elements.
-//code
+static void check_ea(struct sll_fix *sll_f, gconstpointer ignored)
+{
+        sll_setup_lengthy(sll_f, ignored);
+        int *int_arr = malloc(sizeof(int) * 10);
+        int_arr = sllist_extract_after(sll_f->sllist, 98);
+        g_assert(sll_f->sllist->size == 99);
+        g_assert(int_arr != NULL);
+        int_arr = sllist_extract_after(sll_f->sllist, 98);
+        g_assert(int_arr == NULL);
+}
 
 //Run tests in the order they appear in this file.
 int main(int argc, char *argv[])
@@ -270,8 +295,11 @@ int main(int argc, char *argv[])
         g_test_add("/test/sll_read_index test", struct sll_fix, NULL,
                                                         sll_setup_lengthy, 
                                                         check_ri, sll_teardown);
-        g_test_add("/test/sll_find_index test", struct sll_fix, NULL,
+        g_test_add("/test/sll_insert_after test", struct sll_fix, NULL,
                                                         sll_setup_lengthy, 
-                                                        check_fi, sll_teardown);
+                                                        check_ia, sll_teardown);
+        g_test_add("/test/sll_extract_after test", struct sll_fix, NULL,
+                                                        sll_setup_lengthy, 
+                                                        check_ea, sll_teardown);
         return g_test_run();
 }

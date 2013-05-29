@@ -17,6 +17,7 @@ struct sllist* sllist_create(void)
 void sllist_destroy(struct sllist *sllist)
 {
         struct lnode *save_next;
+        sllist->current = sllist->head;
         while(sllist->current != NULL) {
                 save_next = sllist->current->next;
                 free(sllist->current->data);
@@ -115,7 +116,7 @@ int sllist_step(struct sllist *sllist)
 
 void* sllist_read_index(struct sllist *sllist, int index)
 {
-        if ( ((sllist->size - index) < 0 ) || (index < 0) )
+        if ( ((sllist->size - index - 1) < 0 ) || (index < 0) )
                 return NULL;
         struct lnode *target;
         target = sllist->head;
@@ -124,14 +125,42 @@ void* sllist_read_index(struct sllist *sllist, int index)
         return (target->data);
 }
 
-struct lnode* sllist_find_index(struct sllist *sllist, int index)
+int sllist_insert_after(struct sllist *sllist, int index, void *data)
 {
-        if ( ((sllist->size - index) < 0 ) || (index < 0) )
+        if ( ((sllist->size - index - 1) < 0 ) || (index < 0) )
+                return 1;
+        struct lnode *target;
+        target = sllist->head;
+        for(int i = 0; i < index; i++)
+                target = target->next;
+        struct lnode *lnode;
+        lnode = malloc(sizeof(struct lnode));
+        if (lnode == NULL)
+                return -1;
+        lnode->data = data;
+        lnode->next = target->next;
+        target->next = lnode;
+        if (index == sllist->size - 1) //if inserting after tail
+                sllist->tail = lnode;
+        sllist->size++;
+        return 0;
+
+}
+
+void* sllist_extract_after(struct sllist *sllist, int index)
+{
+        if ( ((sllist->size - index - 2) < 0 ) || (index < 0) )
                 return NULL;
         struct lnode *target;
         target = sllist->head;
         for(int i = 0; i < index; i++)
                 target = target->next;
-        return target;
-        
+        if (index == sllist->size - 1) //if extracting tail
+                sllist->tail = target;
+        void *data = target->next->data;
+        struct lnode *save_obsolete = target->next;
+        target->next = target->next->next;
+        free(save_obsolete);
+        sllist->size--;
+        return data;
 }
