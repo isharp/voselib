@@ -126,19 +126,19 @@ static void sll_setup_lengthy(struct sll_fix *sll_f, gconstpointer ignored)
 static void check_create(struct sll_fix *sll_f, gconstpointer ignored)
 {
         sll_setup(sll_f, ignored);
-        g_assert(sll_f->sllist->head == NULL);
-        g_assert(sll_f->sllist->tail == NULL);
-        g_assert(sll_f->sllist->current == NULL);
-        g_assert(sll_f->sllist->size == 0);
+        g_assert(sllist_head(sll_f->sllist) == NULL);
+        g_assert(sllist_tail(sll_f->sllist) == NULL);
+        g_assert(sllist_current(sll_f->sllist) == NULL);
+        g_assert(sllist_size(sll_f->sllist) == 0);
 }
 
 //Procedure for testing a push_front operation on an empty list.
 static void check_pf(struct sll_fix *sll_f, gconstpointer ignored)
 {
         sll_setup_pf(sll_f, ignored);
-        int *int_arr;
-	int_arr = sll_f->sllist->head->data;
-        g_assert(sll_f->sllist->size == 1);
+        struct lnode *head = sllist_head(sll_f->sllist);
+        int *int_arr = lnode_data(head);
+        g_assert(sllist_size(sll_f->sllist) == 1);
 	for(int i = 0; i < 10; i++)
 	        g_assert(int_arr[i] == i * 10);
 }
@@ -147,9 +147,9 @@ static void check_pf(struct sll_fix *sll_f, gconstpointer ignored)
 static void check_pb(struct sll_fix *sll_f, gconstpointer ignored)
 {
         sll_setup_pb(sll_f, ignored);
-        int *int_arr;
-        int_arr = sll_f->sllist->head->data;
-        g_assert(sll_f->sllist->size == 1);
+        struct lnode *head = sllist_head(sll_f->sllist);
+        int *int_arr = lnode_data(head);
+        g_assert(sllist_size(sll_f->sllist) == 1);
         for(int i = 0; i < 10; i++)
                 g_assert(int_arr[i] == i * 10);
 
@@ -185,13 +185,16 @@ static void check_popb(struct sll_fix *sll_f, gconstpointer ignored)
 static void check_step(struct sll_fix *sll_f, gconstpointer ignored)
 {
         sll_setup_step(sll_f, ignored);
+        struct lnode *head = sllist_head(sll_f->sllist);
+        struct lnode *head_next = lnode_next(head);
+        struct lnode *head_next_next = lnode_next(head_next);
         int *int_arr_1;
         int *int_arr_2;
         int *int_arr_3;
-        int_arr_1 = sll_f->sllist->head->data;
-        int_arr_2 = sll_f->sllist->head->next->data;
-        int_arr_3 = sll_f->sllist->head->next->next->data;
-        g_assert(sll_f->sllist->size == 3);
+        int_arr_1 = lnode_data(head); 
+        int_arr_2 = lnode_data(head_next); 
+        int_arr_3 = lnode_data(head_next_next); 
+        g_assert(sllist_size(sll_f->sllist) == 3);
         for(int i = 0; i < 10; i++) {
                 g_assert(int_arr_1[i] == i * 10);
                 g_assert(int_arr_2[i] == i * 20);
@@ -199,12 +202,13 @@ static void check_step(struct sll_fix *sll_f, gconstpointer ignored)
         }
         int *int_arr;
         int loop_ctr = 1;
-        sll_f->sllist->current = sll_f->sllist->head;
-        while(sll_f->sllist->current != NULL) {
-                int_arr = sll_f->sllist->current->data;
+        struct lnode *current = sllist_head(sll_f->sllist); 
+        while(current != NULL) {
+                int_arr = lnode_data(current);
                 for(int i = 0; i < 10; i++)
                         g_assert(int_arr[i] == 10 * loop_ctr * i);
                 sllist_step(sll_f->sllist);
+                current = sllist_current(sll_f->sllist);
                 loop_ctr++;
         }
 
@@ -214,13 +218,14 @@ static void check_step(struct sll_fix *sll_f, gconstpointer ignored)
 static void check_ri(struct sll_fix *sll_f, gconstpointer ignored)
 {
         sll_setup_lengthy(sll_f, ignored);
+        int size = sllist_size(sll_f->sllist); 
         int *int_arr;
-        sll_f->sllist->current = sll_f->sllist->head;
-        for(int i = 0; i < sll_f->sllist->size; i++) {
+        for(int i = 0; i < size; i++) {
                 int_arr = sllist_read_index(sll_f->sllist, i);
                 for(int j = 0; j < 10; j++)
                         g_assert(int_arr[j] == j * 10);
                 sllist_step(sll_f->sllist);
+                size = sllist_size(sll_f->sllist); 
         }
 }
 
@@ -269,7 +274,8 @@ static void check_ea(struct sll_fix *sll_f, gconstpointer ignored)
         sll_setup_lengthy(sll_f, ignored);
         int *int_arr = malloc(sizeof(int) * 10);
         int_arr = sllist_extract_after(sll_f->sllist, 98);
-        g_assert(sll_f->sllist->size == 99);
+        int size = sllist_size(sll_f->sllist); 
+        g_assert(size == 99);
         g_assert(int_arr != NULL);
         int_arr = sllist_extract_after(sll_f->sllist, 98);
         g_assert(int_arr == NULL);
