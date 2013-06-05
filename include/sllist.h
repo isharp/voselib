@@ -16,10 +16,8 @@
  * stored in the list. The nodes are connected sequentially, and thus each node
  * requires a second field to store the address of the next node.
  */
-struct lnode {
-        void *data;
-        struct lnode *next;
-};
+struct lnode;
+
 /**
  * The list structure.
  *
@@ -27,15 +25,13 @@ struct lnode {
  * allows for several operations to be performed more quickly. There is also
  * another pointer-to-node member variable for storing the location of a
  * "current" or active node that presumably will have operations performed on
- * it. Finally there is a size variable containing the total number of nodes.
- * Note that the first index of the list is considered index zero.
+ * it. "current" is only modified whenever a reference to it becomes invalid, or 
+ * whenever sllist_step is called. Finally there is a size variable containing 
+ * the total number of nodes. Note that the first index of the list is
+ * considered index zero.
  */
-struct sllist {
-        struct lnode *head;
-        struct lnode *tail;
-        struct lnode *current;
-        int size;
-};
+struct sllist;
+
 /**
  * Create a new list.
  *
@@ -46,9 +42,42 @@ struct sllist* sllist_create(void);
 /**
  * Destroy a list.
  *
- * Frees the memory of the list struct and all associated nodes.
+ * Frees the memory of the list struct and all associated nodes. The memory to
+ * all the data in the list is also freed, thus we are operating under the
+ * assumption that the data was dynamically allocated.
  */
 void sllist_destroy(struct sllist *sllist);
+
+/**
+ * Accessor function to get a reference to the data in a node.
+ */
+void* lnode_data(const struct lnode *lnode);
+
+/**
+ * Accessor function to get a reference to the next node of a node.
+ */
+struct lnode* lnode_next(const struct lnode *lnode);
+
+/**
+ * Accessor function to get a reference to the head of a list.
+ */
+struct lnode* sllist_head(const struct sllist *sllist);
+
+/**
+ * Accessor function to get a reference to the tail of a list.
+ */
+struct lnode* sllist_tail(const struct sllist *sllist);
+
+/**
+ * Accessor function to get a reference to the current node of a list.
+ */
+struct lnode* sllist_current(const struct sllist *sllist);
+
+/**
+ * Accessor function to get the size of the list. 
+ */
+int sllist_size(const struct sllist *sllist);
+
 
 /**
  * Prepend a node to the list:
@@ -71,7 +100,8 @@ int sllist_push_back(struct sllist *sllist, void *data);
  *
  * Remove the first node from the linked list, save a pointer to the data, free
  * the node (but do not free the data itself), and return a pointer to the data
- * so that it can be used. If the list is empty, returns NULL.
+ * so that it can be used. If the list is empty, returns NULL. If "current" is
+ * popped, "current" is set to NULL.
  */
 void* sllist_pop_front(struct sllist *sllist);
 
@@ -80,7 +110,8 @@ void* sllist_pop_front(struct sllist *sllist);
  *
  * Remove the last node from the linked list, save a pointer to the data, free
  * the node (but do not free the data itself), and return a pointer to the data
- * so that it can be used. If the list is empty, returns NULL.
+ * so that it can be used. If the list is empty, returns NULL. If "current" is
+ * popped, "current" is set to NULL.
  */
  void* sllist_pop_back(struct sllist *sllist);
 
@@ -90,7 +121,6 @@ void* sllist_pop_front(struct sllist *sllist);
  * Changes the current node to the node after the current node. Returns 1 if
  * the current node is NULL.
  */
-
 int sllist_step(struct sllist *sllist);
 
 /**
@@ -118,7 +148,7 @@ int sllist_insert_after(struct sllist *sllist, int index, void *data);
  * free the node (but do not free the data itself), and return a pointer to the
  * data so that it can be used. If the list is empty or the node doesn't exist
  * in the list, returns NULL. Attempting to extract after the tail will also
- * return NULL.
+ * return NULL. If "current" is extracted, it will be set to null.
  */
 void* sllist_extract_after(struct sllist *sllist, int index);
 

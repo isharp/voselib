@@ -1,6 +1,19 @@
 #include <stdlib.h>
 #include "sllist.h"
 
+/* Structures */
+struct lnode {
+        void *data;
+        struct lnode *next;
+};
+
+struct sllist {
+        struct lnode *head;
+        struct lnode *tail;
+        struct lnode *current;
+        int size;
+};
+
 /* Static functions - (local to this file) */
 static struct lnode* find_target(struct sllist *sllist, int index)
 {
@@ -19,7 +32,37 @@ static struct lnode* find_new_tail(struct sllist *sllist)
         return new_tail;
 }
 
-/* API functions */
+/* API functions - Accessor functions grouped first, followed by operations. */
+void* lnode_data(const struct lnode *lnode)
+{
+        return lnode->data; 
+}
+
+struct lnode* lnode_next(const struct lnode *lnode)
+{
+        return lnode->next; 
+}
+
+struct lnode* sllist_head(const struct sllist *sllist)
+{
+        return sllist->head; 
+}
+
+struct lnode* sllist_tail(const struct sllist *sllist)
+{
+        return sllist->tail; 
+}
+
+struct lnode* sllist_current(const struct sllist *sllist)
+{
+        return sllist->current; 
+}
+
+int sllist_size(const struct sllist *sllist)
+{
+        return sllist->size; 
+}
+
 struct sllist* sllist_create(void)
 {
         struct sllist *sllist;
@@ -83,17 +126,17 @@ int sllist_push_back(struct sllist *sllist, void *data)
 
 void* sllist_pop_front(struct sllist *sllist)
 {
-	if (sllist->size == 0)
-		return NULL;
+        if (sllist->size == 0)
+                return NULL;
         void* data = sllist->head->data;
         struct lnode *save_head = sllist->head;
-	if (sllist->size == 1) {
+        if (sllist->size == 1) {
                 sllist->head = NULL;
-		sllist->tail = NULL;
+                sllist->tail = NULL;
                 //Clear current since it shouldn't be used.
-		sllist->current = NULL;
-	} else {
-		sllist->head = sllist->head->next;
+                sllist->current = NULL;
+        } else {
+                sllist->head = sllist->head->next;
 	}
         free(save_head);
 	sllist->size--;
