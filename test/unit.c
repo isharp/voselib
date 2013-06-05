@@ -45,6 +45,7 @@ static void sll_teardown(struct sll_fix *sll_f, gconstpointer ignored)
         sllist_destroy(sll_f->sllist);
 }
 
+static void no_op(struct sll_fix *sll_f, gconstpointer ignored) {;}
 //Prepare fixture for testing push_front operation.
 static void sll_setup_pf(struct sll_fix *sll_f, gconstpointer ignored)
 {
@@ -117,7 +118,7 @@ static void sll_setup_lengthy(struct sll_fix *sll_f, gconstpointer ignored)
                 for(int j = 0; j < 10; j++)
                         testp[j] = j * 10;
                 sllist_push_back(sll_f->sllist, testp);
-                
+
         }
 }
 
@@ -226,34 +227,40 @@ static void check_ri(struct sll_fix *sll_f, gconstpointer ignored)
 //Procedure for testing an insert_after operation on a list with 100 elements.
 static void check_ia(struct sll_fix *sll_f, gconstpointer ignored)
 {
-        sll_setup_lengthy(sll_f, ignored);
-        int *int_arr;
-        int_arr = malloc(sizeof(int) * 10);
-        for(int i = 0; i < 10; i++)
-                int_arr[i] = 314159 * i;
-        g_assert(!sllist_insert_after(sll_f->sllist, 0, int_arr));
-        g_assert(!sllist_insert_after(sll_f->sllist, 1, int_arr));
-        g_assert(!sllist_insert_after(sll_f->sllist, 50, int_arr));
-        g_assert(!sllist_insert_after(sll_f->sllist, 102, int_arr));
-        int_arr = sllist_read_index(sll_f->sllist, 0);
-        for(int i = 0; i < 10; i++)
-                g_assert(int_arr[i] == i * 10);
-        int_arr = sllist_read_index(sll_f->sllist, 1);
-        for(int i = 0; i < 10; i++)
-                g_assert(int_arr[i] == 314159 * i);
-        int_arr = sllist_read_index(sll_f->sllist, 2);
-        for(int i = 0; i < 10; i++)
-                g_assert(int_arr[i] == 314159 * i);
-        int_arr = sllist_read_index(sll_f->sllist, 51);
-        for(int i = 0; i < 10; i++)
-                g_assert(int_arr[i] == 314159 * i);
-        int_arr = sllist_read_index(sll_f->sllist, 52);
-        for(int i = 0; i < 10; i++)
-                g_assert(int_arr[i] == i * 10);
-        int_arr = sllist_read_index(sll_f->sllist, 103);
-        for(int i = 0; i < 10; i++)
-                g_assert(int_arr[i] == 314159 * i);
 
+        sll_setup_lengthy(sll_f, ignored);
+        int *int_arr1 = malloc(sizeof(int) * 10);
+        int *int_arr2 = malloc(sizeof(int) * 10);
+        int *int_arr3 = malloc(sizeof(int) * 10);
+        int *int_arr4 = malloc(sizeof(int) * 10);
+        for(int i = 0; i < 10; i++) {
+                int_arr1[i] = 314159 * i;
+                int_arr2[i] = 314159 * i;
+                int_arr3[i] = 314159 * i;
+                int_arr4[i] = 314159 * i;
+        }
+        g_assert(!sllist_insert_after(sll_f->sllist, 0, int_arr1));
+        g_assert(!sllist_insert_after(sll_f->sllist, 1, int_arr2));
+        g_assert(!sllist_insert_after(sll_f->sllist, 50, int_arr3));
+        g_assert(!sllist_insert_after(sll_f->sllist, 102, int_arr4));
+        int_arr1 = sllist_read_index(sll_f->sllist, 0);
+        for(int i = 0; i < 10; i++)
+                g_assert(int_arr1[i] == i * 10);
+        int_arr1 = sllist_read_index(sll_f->sllist, 1);
+        for(int i = 0; i < 10; i++)
+                g_assert(int_arr1[i] == 314159 * i);
+        int_arr1 = sllist_read_index(sll_f->sllist, 2);
+        for(int i = 0; i < 10; i++)
+                g_assert(int_arr1[i] == 314159 * i);
+        int_arr1 = sllist_read_index(sll_f->sllist, 51);
+        for(int i = 0; i < 10; i++)
+                g_assert(int_arr1[i] == 314159 * i);
+        int_arr1 = sllist_read_index(sll_f->sllist, 52);
+        for(int i = 0; i < 10; i++)
+                g_assert(int_arr1[i] == i * 10);
+        int_arr1 = sllist_read_index(sll_f->sllist, 103);
+        for(int i = 0; i < 10; i++)
+                g_assert(int_arr1[i] == 314159 * i);
 }
 
 //Procedure for testing an extract_after operation on a list with 100 elements.
@@ -275,13 +282,13 @@ int main(int argc, char *argv[])
         g_test_add("/test/sll_create test", struct sll_fix, NULL, sll_setup,
                                                         check_create,
                                                         sll_teardown);
-        g_test_add("/test/sll_push_front test", struct sll_fix, NULL, 
+        g_test_add("/test/sll_push_front test", struct sll_fix, NULL,
                                                         sll_setup_pf, check_pf,
                                                         sll_teardown);
         g_test_add("/test/sll_push_back test", struct sll_fix, NULL,
                                                         sll_setup_pb, check_pb,
                                                         sll_teardown);
-        g_test_add("/test/sll_pop_front test", struct sll_fix, NULL, 
+        g_test_add("/test/sll_pop_front test", struct sll_fix, NULL,
                                                         sll_setup_pop,
                                                         check_popf,
                                                         sll_teardown);
@@ -293,13 +300,13 @@ int main(int argc, char *argv[])
                                                         check_step,
                                                         sll_teardown);
         g_test_add("/test/sll_read_index test", struct sll_fix, NULL,
-                                                        sll_setup_lengthy, 
+                                                        sll_setup_lengthy,
                                                         check_ri, sll_teardown);
         g_test_add("/test/sll_insert_after test", struct sll_fix, NULL,
-                                                        sll_setup_lengthy, 
-                                                        check_ia, sll_teardown);
+                                                        sll_setup_lengthy,
+                                                        check_ia, no_op);
         g_test_add("/test/sll_extract_after test", struct sll_fix, NULL,
-                                                        sll_setup_lengthy, 
+                                                        sll_setup_lengthy,
                                                         check_ea, sll_teardown);
         return g_test_run();
 }

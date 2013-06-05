@@ -1,6 +1,25 @@
 #include <stdlib.h>
 #include "sllist.h"
 
+/* Static functions - (local to this file) */
+static struct lnode* find_target(struct sllist *sllist, int index)
+{
+        struct lnode *target;
+        target = sllist->head;
+        for(int i = 0; i < index; i++)
+                target = target->next;
+        return target;
+}
+
+static struct lnode* find_new_tail(struct sllist *sllist)
+{
+        struct lnode *new_tail = sllist->head;
+        while(new_tail->next->next != NULL)
+                new_tail = new_tail->next;
+        return new_tail;
+}
+
+/* API functions */
 struct sllist* sllist_create(void)
 {
         struct sllist *sllist;
@@ -93,9 +112,7 @@ void* sllist_pop_back(struct sllist *sllist)
                 //Clear current since it shouldn't be used.
                 sllist->current = NULL;
         } else {
-                struct lnode *new_tail = sllist->head;
-                while(new_tail->next->next != NULL)
-                        new_tail = new_tail->next;
+                struct lnode *new_tail = find_new_tail(sllist);
                 sllist->tail = new_tail;
                 sllist->tail->next = NULL;
         }
@@ -116,25 +133,18 @@ int sllist_step(struct sllist *sllist)
 
 void* sllist_read_index(struct sllist *sllist, int index)
 {
-        if ( ((sllist->size - index - 1) < 0 ) || (index < 0) )
+        if ((index >= sllist->size) || (index < 0))
                 return NULL;
-        struct lnode *target;
-        target = sllist->head;
-        for(int i = 0; i < index; i++)
-                target = target->next;
-        return (target->data);
+        struct lnode *target = find_target(sllist, index);
+        return target->data;
 }
 
 int sllist_insert_after(struct sllist *sllist, int index, void *data)
 {
-        if ( ((sllist->size - index - 1) < 0 ) || (index < 0) )
+        if ((index >= sllist->size) || (index < 0))
                 return 1;
-        struct lnode *target;
-        target = sllist->head;
-        for(int i = 0; i < index; i++)
-                target = target->next;
-        struct lnode *lnode;
-        lnode = malloc(sizeof(struct lnode));
+        struct lnode *target = find_target(sllist, index);
+        struct lnode *lnode = malloc(sizeof(struct lnode));
         if (lnode == NULL)
                 return -1;
         lnode->data = data;
@@ -149,17 +159,16 @@ int sllist_insert_after(struct sllist *sllist, int index, void *data)
 
 void* sllist_extract_after(struct sllist *sllist, int index)
 {
-        if ( ((sllist->size - index - 2) < 0 ) || (index < 0) )
+        if ((index >= sllist->size - 1) || (index < 0))
                 return NULL;
-        struct lnode *target;
-        target = sllist->head;
-        for(int i = 0; i < index; i++)
-                target = target->next;
+        struct lnode *target = find_target(sllist, index);
         if (index == sllist->size - 1) //if extracting tail
                 sllist->tail = target;
         void *data = target->next->data;
         struct lnode *save_obsolete = target->next;
         target->next = target->next->next;
+        if (save_obsolete == sllist->current)
+                sllist->current = NULL;
         free(save_obsolete);
         sllist->size--;
         return data;

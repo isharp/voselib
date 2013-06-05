@@ -9,10 +9,9 @@ int main(void)
         for(int i = 0; i < 2000; i++) {
                 number = malloc(sizeof(int));
                 *number = i;
-                sllist_push_front(nums, number);
                 sllist_push_back(nums, number);
         } 
-        
+
         number = sllist_pop_front(nums);
         free(number);
         number = sllist_pop_back(nums);
