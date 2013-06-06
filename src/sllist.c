@@ -2,58 +2,58 @@
 #include "sllist.h"
 
 /* Structures */
-struct lnode {
+struct snode {
         void *data;
-        struct lnode *next;
+        struct snode *next;
 };
 
 struct sllist {
-        struct lnode *head;
-        struct lnode *tail;
-        struct lnode *current;
+        struct snode *head;
+        struct snode *tail;
+        struct snode *current;
         int size;
 };
 
 /* Static functions - (local to this file) */
-static struct lnode* find_target(struct sllist *sllist, int index)
+static struct snode* find_target(struct sllist *sllist, int index)
 {
-        struct lnode *target;
+        struct snode *target;
         target = sllist->head;
         for(int i = 0; i < index; i++)
                 target = target->next;
         return target;
 }
 
-static struct lnode* find_new_tail(struct sllist *sllist)
+static struct snode* find_new_tail(struct sllist *sllist)
 {
-        struct lnode *new_tail = sllist->head;
+        struct snode *new_tail = sllist->head;
         while(new_tail->next->next != NULL)
                 new_tail = new_tail->next;
         return new_tail;
 }
 
 /* API functions - Accessor functions grouped first, followed by operations. */
-void* lnode_data(const struct lnode *lnode)
+void* snode_data(const struct snode *snode)
 {
-        return lnode->data; 
+        return snode->data; 
 }
 
-struct lnode* lnode_next(const struct lnode *lnode)
+struct snode* snode_next(const struct snode *snode)
 {
-        return lnode->next; 
+        return snode->next; 
 }
 
-struct lnode* sllist_head(const struct sllist *sllist)
+struct snode* sllist_head(const struct sllist *sllist)
 {
         return sllist->head; 
 }
 
-struct lnode* sllist_tail(const struct sllist *sllist)
+struct snode* sllist_tail(const struct sllist *sllist)
 {
         return sllist->tail; 
 }
 
-struct lnode* sllist_current(const struct sllist *sllist)
+struct snode* sllist_current(const struct sllist *sllist)
 {
         return sllist->current; 
 }
@@ -78,7 +78,7 @@ struct sllist* sllist_create(void)
 
 void sllist_destroy(struct sllist *sllist)
 {
-        struct lnode *save_next;
+        struct snode *save_next;
         sllist->current = sllist->head;
         while(sllist->current != NULL) {
                 save_next = sllist->current->next;
@@ -91,15 +91,15 @@ void sllist_destroy(struct sllist *sllist)
 
 int sllist_push_front(struct sllist *sllist, void *data)
 {
-        struct lnode *lnode;
-        lnode = malloc(sizeof(struct lnode));
-        if (lnode == NULL)
+        struct snode *snode;
+        snode = malloc(sizeof(struct snode));
+        if (snode == NULL)
                 return -1;
-        lnode->data = data;
-        lnode->next = sllist->head;
-        sllist->head = lnode;
+        snode->data = data;
+        snode->next = sllist->head;
+        sllist->head = snode;
         if (sllist->size == 0)
-                sllist->tail = lnode;
+                sllist->tail = snode;
         sllist->size++;
         return 0;
 
@@ -107,18 +107,18 @@ int sllist_push_front(struct sllist *sllist, void *data)
 
 int sllist_push_back(struct sllist *sllist, void *data)
 {
-        struct lnode *lnode;
-        lnode = malloc(sizeof(struct lnode));
-        if (lnode ==NULL)
+        struct snode *snode;
+        snode = malloc(sizeof(struct snode));
+        if (snode ==NULL)
                 return -1;
-        lnode->data = data;
-        lnode->next = NULL;
+        snode->data = data;
+        snode->next = NULL;
         if (sllist->size == 0) {
-                sllist->head = lnode;
-                sllist->tail = lnode;
+                sllist->head = snode;
+                sllist->tail = snode;
         } else {
-                sllist->tail->next = lnode;
-                sllist->tail = lnode;
+                sllist->tail->next = snode;
+                sllist->tail = snode;
         }
         sllist->size++;
         return 0;
@@ -129,7 +129,7 @@ void* sllist_pop_front(struct sllist *sllist)
         if (sllist->size == 0)
                 return NULL;
         void* data = sllist->head->data;
-        struct lnode *save_head = sllist->head;
+        struct snode *save_head = sllist->head;
         if (sllist->size == 1) {
                 sllist->head = NULL;
                 sllist->tail = NULL;
@@ -148,14 +148,14 @@ void* sllist_pop_back(struct sllist *sllist)
         if (sllist->size == 0)
                 return NULL;
         void *data = sllist->tail->data;
-        struct lnode *save_tail = sllist->tail;
+        struct snode *save_tail = sllist->tail;
         if (sllist->size == 1) {
                 sllist->head = NULL;
                 sllist->tail = NULL;
                 //Clear current since it shouldn't be used.
                 sllist->current = NULL;
         } else {
-                struct lnode *new_tail = find_new_tail(sllist);
+                struct snode *new_tail = find_new_tail(sllist);
                 sllist->tail = new_tail;
                 sllist->tail->next = NULL;
         }
@@ -178,7 +178,7 @@ void* sllist_read_index(struct sllist *sllist, int index)
 {
         if ((index >= sllist->size) || (index < 0))
                 return NULL;
-        struct lnode *target = find_target(sllist, index);
+        struct snode *target = find_target(sllist, index);
         return target->data;
 }
 
@@ -186,15 +186,15 @@ int sllist_insert_after(struct sllist *sllist, int index, void *data)
 {
         if ((index >= sllist->size) || (index < 0))
                 return 1;
-        struct lnode *target = find_target(sllist, index);
-        struct lnode *lnode = malloc(sizeof(struct lnode));
-        if (lnode == NULL)
+        struct snode *target = find_target(sllist, index);
+        struct snode *snode = malloc(sizeof(struct snode));
+        if (snode == NULL)
                 return -1;
-        lnode->data = data;
-        lnode->next = target->next;
-        target->next = lnode;
+        snode->data = data;
+        snode->next = target->next;
+        target->next = snode;
         if (index == sllist->size - 1) //if inserting after tail
-                sllist->tail = lnode;
+                sllist->tail = snode;
         sllist->size++;
         return 0;
 
@@ -204,11 +204,11 @@ void* sllist_extract_after(struct sllist *sllist, int index)
 {
         if ((index >= sllist->size - 1) || (index < 0))
                 return NULL;
-        struct lnode *target = find_target(sllist, index);
+        struct snode *target = find_target(sllist, index);
         if (index == sllist->size - 1) //if extracting tail
                 sllist->tail = target;
         void *data = target->next->data;
-        struct lnode *save_obsolete = target->next;
+        struct snode *save_obsolete = target->next;
         target->next = target->next->next;
         if (save_obsolete == sllist->current)
                 sllist->current = NULL;

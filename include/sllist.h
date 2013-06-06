@@ -16,7 +16,7 @@
  * stored in the list. The nodes are connected sequentially, and thus each node
  * requires a second field to store the address of the next node.
  */
-struct lnode;
+struct snode;
 
 /**
  * The list structure.
@@ -51,27 +51,27 @@ void sllist_destroy(struct sllist *sllist);
 /**
  * Accessor function to get a reference to the data in a node.
  */
-void* lnode_data(const struct lnode *lnode);
+void* snode_data(const struct snode *snode);
 
 /**
  * Accessor function to get a reference to the next node of a node.
  */
-struct lnode* lnode_next(const struct lnode *lnode);
+struct snode* snode_next(const struct snode *snode);
 
 /**
  * Accessor function to get a reference to the head of a list.
  */
-struct lnode* sllist_head(const struct sllist *sllist);
+struct snode* sllist_head(const struct sllist *sllist);
 
 /**
  * Accessor function to get a reference to the tail of a list.
  */
-struct lnode* sllist_tail(const struct sllist *sllist);
+struct snode* sllist_tail(const struct sllist *sllist);
 
 /**
  * Accessor function to get a reference to the current node of a list.
  */
-struct lnode* sllist_current(const struct sllist *sllist);
+struct snode* sllist_current(const struct sllist *sllist);
 
 /**
  * Accessor function to get the size of the list. 

@@ -136,8 +136,8 @@ static void check_create(struct sll_fix *sll_f, gconstpointer ignored)
 static void check_pf(struct sll_fix *sll_f, gconstpointer ignored)
 {
         sll_setup_pf(sll_f, ignored);
-        struct lnode *head = sllist_head(sll_f->sllist);
-        int *int_arr = lnode_data(head);
+        struct snode *head = sllist_head(sll_f->sllist);
+        int *int_arr = snode_data(head);
         g_assert(sllist_size(sll_f->sllist) == 1);
 	for(int i = 0; i < 10; i++)
 	        g_assert(int_arr[i] == i * 10);
@@ -147,8 +147,8 @@ static void check_pf(struct sll_fix *sll_f, gconstpointer ignored)
 static void check_pb(struct sll_fix *sll_f, gconstpointer ignored)
 {
         sll_setup_pb(sll_f, ignored);
-        struct lnode *head = sllist_head(sll_f->sllist);
-        int *int_arr = lnode_data(head);
+        struct snode *head = sllist_head(sll_f->sllist);
+        int *int_arr = snode_data(head);
         g_assert(sllist_size(sll_f->sllist) == 1);
         for(int i = 0; i < 10; i++)
                 g_assert(int_arr[i] == i * 10);
@@ -185,15 +185,15 @@ static void check_popb(struct sll_fix *sll_f, gconstpointer ignored)
 static void check_step(struct sll_fix *sll_f, gconstpointer ignored)
 {
         sll_setup_step(sll_f, ignored);
-        struct lnode *head = sllist_head(sll_f->sllist);
-        struct lnode *head_next = lnode_next(head);
-        struct lnode *head_next_next = lnode_next(head_next);
+        struct snode *head = sllist_head(sll_f->sllist);
+        struct snode *head_next = snode_next(head);
+        struct snode *head_next_next = snode_next(head_next);
         int *int_arr_1;
         int *int_arr_2;
         int *int_arr_3;
-        int_arr_1 = lnode_data(head); 
-        int_arr_2 = lnode_data(head_next); 
-        int_arr_3 = lnode_data(head_next_next); 
+        int_arr_1 = snode_data(head); 
+        int_arr_2 = snode_data(head_next); 
+        int_arr_3 = snode_data(head_next_next); 
         g_assert(sllist_size(sll_f->sllist) == 3);
         for(int i = 0; i < 10; i++) {
                 g_assert(int_arr_1[i] == i * 10);
@@ -202,9 +202,9 @@ static void check_step(struct sll_fix *sll_f, gconstpointer ignored)
         }
         int *int_arr;
         int loop_ctr = 1;
-        struct lnode *current = sllist_head(sll_f->sllist); 
+        struct snode *current = sllist_head(sll_f->sllist); 
         while(current != NULL) {
-                int_arr = lnode_data(current);
+                int_arr = snode_data(current);
                 for(int i = 0; i < 10; i++)
                         g_assert(int_arr[i] == 10 * loop_ctr * i);
                 sllist_step(sll_f->sllist);
