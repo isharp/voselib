@@ -15,7 +15,7 @@ struct sllist {
 };
 
 /* Static functions - (local to this file) */
-static struct snode* find_target(struct sllist *sllist, int index)
+static struct snode *find_target(struct sllist *sllist, int index)
 {
         struct snode *target;
         target = sllist->head;
@@ -24,7 +24,7 @@ static struct snode* find_target(struct sllist *sllist, int index)
         return target;
 }
 
-static struct snode* find_new_tail(struct sllist *sllist)
+static struct snode *find_new_tail(struct sllist *sllist)
 {
         struct snode *new_tail = sllist->head;
         while(new_tail->next->next != NULL)
@@ -33,27 +33,27 @@ static struct snode* find_new_tail(struct sllist *sllist)
 }
 
 /* API functions - Accessor functions grouped first, followed by operations. */
-void* snode_data(const struct snode *snode)
+void *snode_data(const struct snode *snode)
 {
         return snode->data; 
 }
 
-struct snode* snode_next(const struct snode *snode)
+struct snode *snode_next(const struct snode *snode)
 {
         return snode->next; 
 }
 
-struct snode* sllist_head(const struct sllist *sllist)
+struct snode *sllist_head(const struct sllist *sllist)
 {
         return sllist->head; 
 }
 
-struct snode* sllist_tail(const struct sllist *sllist)
+struct snode *sllist_tail(const struct sllist *sllist)
 {
         return sllist->tail; 
 }
 
-struct snode* sllist_current(const struct sllist *sllist)
+struct snode *sllist_current(const struct sllist *sllist)
 {
         return sllist->current; 
 }
@@ -63,7 +63,7 @@ int sllist_size(const struct sllist *sllist)
         return sllist->size; 
 }
 
-struct sllist* sllist_create(void)
+struct sllist *sllist_create(void)
 {
         struct sllist *sllist;
         sllist = malloc(sizeof(struct sllist));
@@ -124,7 +124,7 @@ int sllist_push_back(struct sllist *sllist, void *data)
         return 0;
 }
 
-void* sllist_pop_front(struct sllist *sllist)
+void *sllist_pop_front(struct sllist *sllist)
 {
         if (sllist->size == 0)
                 return NULL;
@@ -143,7 +143,7 @@ void* sllist_pop_front(struct sllist *sllist)
 	return data;
 }
 
-void* sllist_pop_back(struct sllist *sllist)
+void *sllist_pop_back(struct sllist *sllist)
 {
         if (sllist->size == 0)
                 return NULL;
@@ -174,7 +174,7 @@ int sllist_step(struct sllist *sllist)
         }
 }
 
-void* sllist_read_index(struct sllist *sllist, int index)
+void *sllist_read_index(struct sllist *sllist, int index)
 {
         if ((index >= sllist->size) || (index < 0))
                 return NULL;
@@ -200,7 +200,7 @@ int sllist_insert_after(struct sllist *sllist, int index, void *data)
 
 }
 
-void* sllist_extract_after(struct sllist *sllist, int index)
+void *sllist_extract_after(struct sllist *sllist, int index)
 {
         if ((index >= sllist->size - 1) || (index < 0))
                 return NULL;

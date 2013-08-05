@@ -5,7 +5,7 @@
  * @file sllist.h
  * @brief Stuctures and functions for a singly-linked list API.
  *
- * The user provided with several different functions to manipulate lists and
+ * The user is provided with several different functions to manipulate lists and
  * associated data.
  */
 
@@ -37,7 +37,7 @@ struct sllist;
  *
  * Returns a pointer to a new, empty list. If allocation fails, returns NULL.
  */
-struct sllist* sllist_create(void);
+struct sllist *sllist_create(void);
 
 /**
  * Destroy a list.
@@ -51,27 +51,27 @@ void sllist_destroy(struct sllist *sllist);
 /**
  * Accessor function to get a reference to the data in a node.
  */
-void* snode_data(const struct snode *snode);
+void *snode_data(const struct snode *snode);
 
 /**
  * Accessor function to get a reference to the next node of a node.
  */
-struct snode* snode_next(const struct snode *snode);
+struct snode *snode_next(const struct snode *snode);
 
 /**
  * Accessor function to get a reference to the head of a list.
  */
-struct snode* sllist_head(const struct sllist *sllist);
+struct snode *sllist_head(const struct sllist *sllist);
 
 /**
  * Accessor function to get a reference to the tail of a list.
  */
-struct snode* sllist_tail(const struct sllist *sllist);
+struct snode *sllist_tail(const struct sllist *sllist);
 
 /**
  * Accessor function to get a reference to the current node of a list.
  */
-struct snode* sllist_current(const struct sllist *sllist);
+struct snode *sllist_current(const struct sllist *sllist);
 
 /**
  * Accessor function to get the size of the list. 
@@ -103,7 +103,7 @@ int sllist_push_back(struct sllist *sllist, void *data);
  * so that it can be used. If the list is empty, returns NULL. If "current" is
  * popped, "current" is set to NULL.
  */
-void* sllist_pop_front(struct sllist *sllist);
+void *sllist_pop_front(struct sllist *sllist);
 
 /**
  * Extract the last node.
@@ -113,7 +113,7 @@ void* sllist_pop_front(struct sllist *sllist);
  * so that it can be used. If the list is empty, returns NULL. If "current" is
  * popped, "current" is set to NULL.
  */
- void* sllist_pop_back(struct sllist *sllist);
+ void *sllist_pop_back(struct sllist *sllist);
 
 /**
  * Step through a list.
@@ -131,7 +131,7 @@ int sllist_step(struct sllist *sllist);
  * index zero, the first node of the list. Returns NULL if the list is empty or
  * the index is out of range.
  */
-void* sllist_read_index(struct sllist *sllist, int index);
+void *sllist_read_index(struct sllist *sllist, int index);
 
 /**
  * Insert a node after the node at the specified index.
@@ -150,6 +150,6 @@ int sllist_insert_after(struct sllist *sllist, int index, void *data);
  * in the list, returns NULL. Attempting to extract after the tail will also
  * return NULL. If "current" is extracted, it will be set to null.
  */
-void* sllist_extract_after(struct sllist *sllist, int index);
+void *sllist_extract_after(struct sllist *sllist, int index);
 
 #endif
